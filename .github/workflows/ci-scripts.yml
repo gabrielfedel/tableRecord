@@ -1,0 +1,99 @@
+name: Makefile
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  SETUP_PATH: .ci-local:.ci
+
+jobs:
+  make:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - name: linux-7.0
+          os: ubuntu-latest
+          cmp: gcc
+          base: "7.0"
+
+        - name: mac-7.0
+          os: macos-latest
+          cmp: gcc
+          base: "7.0"
+
+    env:
+      MODULES: "pvxs"
+      BASE: ${{ matrix.base }}
+      BASE_RECURSIVE: NO
+      PVXS: master
+      PVXS_REPOOWNER: epics-base
+      CMP: ${{ matrix.cmp }}
+      BCFG: default
+      TEST: ${{ matrix.test }}
+      EXTRA: ${{ matrix.extra }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+            submodules: recursive
+
+      - name: Automatic core dumper analysis
+        uses: mdavidsaver/ci-core-dumper@ci
+
+      - name: "apt-get install"
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libreadline-dev cmake gdb libevent-dev
+
+      - name: "brew libevent"
+        if: runner.os == 'macOS'
+        run: |
+          brew install libevent
+          echo "LIBEVENT=$(brew --prefix)" >> "$GITHUB_ENV"
+
+      - name: "vcpkg cache"
+        if: runner.os == 'Windows'
+        uses: actions/cache@v5
+        with:
+          path: c:/vcpkg-cache
+          key: ${{ runner.os }}-vcpkg
+
+      - name: "vcpkg build"
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          install -d c:/vcpkg-cache
+          vcpkg install --binarysource="clear;files,c:/vcpkg-cache,readwrite" "libevent"
+          ls C:/vcpkg/installed/x64-windows
+          echo "LIBEVENT=C:/vcpkg/installed/x64-windows" >> "$GITHUB_ENV"
+
+      - name: Prepare and compile dependencies
+        run: python .ci/cue.py prepare
+
+      - name: Build main module
+        run: python .ci/cue.py build
+
+      - name: Run main module tests
+        run: python .ci/cue.py test
+
+      - name: Collect and show test results
+        if: ${{ always() }}
+        run: python .ci/cue.py test-results
+
+      - name: Upload tapfiles Artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: tapfiles ${{ matrix.name }}
+          path: '**/O.*/*.tap'
+          if-no-files-found: ignore
