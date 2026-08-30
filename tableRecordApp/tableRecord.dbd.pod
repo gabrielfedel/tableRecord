@@ -289,19 +289,19 @@ formats, discriminated by two sentinel bytes within the cell:
 
 =item *
 
-B<Type 1 - inline short> (length E<le> 31, no embedded C<NUL>): the string
+B<Type 1 - very short string> (length E<le> 31, no embedded C<NUL>): the string
 bytes are stored directly in the cell, NUL-terminated. Fully compatible with
 an ordinary C<DBF_STRING>.
 
 =item *
 
-B<Type 2 - plain long> (32 E<le> length E<le> 39, no embedded C<NUL>): the
+B<Type 2 - short string> (32 E<le> length E<le> 39, no embedded C<NUL>): the
 string bytes are stored directly in the cell, NUL-terminated. Also compatible
 with an ordinary C<DBF_STRING>.
 
 =item *
 
-B<Type 3 - overflow> (length E<gt> 39, or embedded C<NUL>): up to 31 bytes of
+B<Type 3 - long string> (length E<gt> 39, or embedded C<NUL>): up to 31 bytes of
 a UTF-8-clean preview are stored in the cell inline; a pointer to a
 heap-allocated C<tablerecVStr> block carrying the full string is stored in
 bytes 32..39 of the cell.

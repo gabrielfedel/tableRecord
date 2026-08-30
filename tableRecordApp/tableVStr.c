@@ -77,7 +77,7 @@ static epicsUInt32 utf8PreviewCut(const char *bytes, epicsUInt32 len)
 }
 
 /* ------------------------------------------------------------------ */
-/* Public API                                                           */
+/* Public API                                                         */
 /* ------------------------------------------------------------------ */
 
 void tablerec_vstr_write(void *colbuf, epicsUInt32 row,
@@ -102,20 +102,20 @@ void tablerec_vstr_write(void *colbuf, epicsUInt32 row,
     }
 
     if (len <= (epicsUInt32)VSTR_FIREWALL && !hasNul) {
-        /* Type 1 — inline short */
+        /* Type 1 — very short string */
         memcpy(cell, bytes, len);
         /* bytes [len..39] remain zero; no NUL needed explicitly (zero-fill) */
         return;
     }
 
     if (len <= (epicsUInt32)VSTR_PLAIN_MAX && !hasNul) {
-        /* Type 2 — plain long (32..39 bytes, byte[31] will be nonzero) */
+        /* Type 2 — short string (32..39 bytes, byte[31] will be nonzero) */
         memcpy(cell, bytes, len);
         /* cell[len] == 0 (already), bytes after NUL are zero (memset above) */
         return;
     }
 
-    /* Type 3 — overflow (len > 39, or embedded NUL) */
+    /* Type 3 — long string (len > 39, or embedded NUL) */
     {
         tablerecVStr *p = (tablerecVStr *)mallocMustSucceed(
             offsetof(tablerecVStr, data) + (size_t)len + 1,
@@ -142,22 +142,22 @@ const char *tablerec_vstr_read(const void *colbuf, epicsUInt32 row,
                                epicsUInt32 *plen)
 {
     const char *cell = cellAtConst(colbuf, row);
-    tablerecVStr *p  = cellOverflow(cell);
 
     if (cell[VSTR_FIREWALL] != '\0') {
-        /* Type 2 — plain long: NUL-terminated C string; byte[39] is always NUL */
+        /* Type 2 — short string: NUL-terminated C string; byte[39] is always NUL */
         epicsUInt32 n = (epicsUInt32)epicsStrnLen(cell, MAX_STRING_SIZE);
         *plen = n;
         return cell;
     }
 
+    tablerecVStr *p  = cellOverflow(cell);
     if (p) {
-        /* Type 3 — overflow: read from the heap block */
+        /* Type 3 — long string: read from the heap block */
         *plen = p->len;
         return p->data;
     }
 
-    /* Type 1 — inline short: NUL-terminated within bytes 0..31 */
+    /* Type 1 — very short string: NUL-terminated within bytes 0..31 */
     *plen = (epicsUInt32)epicsStrnLen(cell, VSTR_FIREWALL + 1);
     return cell;
 }

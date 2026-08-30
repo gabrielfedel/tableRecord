@@ -162,7 +162,7 @@ static void testStringTruncation(void)
     /* good:longstr.C00INP is a constant array of strings, two of which exceed
      * 39 chars.  Loaded as DBF_STRING by the soft device support in pass-1, the
      * over-length rows come back clamped to 39 chars -- the vstring type-3
-     * overflow path is unreachable through link loads (see devTableSoft.cpp). */
+     * long string path is unreachable through link loads (see devTableSoft.cpp). */
     dbCommon *prec = testdbRecordPtr("good:longstr.NUMCOLS");
 
     testdbGetFieldEqual("good:longstr.C00NROWS", DBF_ULONG, 3);

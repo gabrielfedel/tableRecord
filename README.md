@@ -125,9 +125,9 @@ Each 40-byte cell in a `STRING` column is encoded in one of three formats:
 
 | Cell type | Condition | Storage |
 |-----------|-----------|---------|
-| **Type 1** - inline short | length ≤ 31, no embedded NUL | bytes stored directly in the cell, NUL-terminated |
-| **Type 2** - plain long | 32 ≤ length ≤ 39, no embedded NUL | bytes stored directly in the cell, NUL-terminated |
-| **Type 3** - overflow | length > 39, or embedded NUL | up to 31 bytes of UTF-8-clean preview in the cell; a heap pointer in bytes 32-39 carries the full string |
+| **Type 1** - very short string | length ≤ 31, no embedded NUL | bytes stored directly in the cell, NUL-terminated |
+| **Type 2** - short string | 32 ≤ length ≤ 39, no embedded NUL | bytes stored directly in the cell, NUL-terminated |
+| **Type 3** - long string | length > 39, or embedded NUL | up to 31 bytes of UTF-8-clean preview in the cell; a heap pointer in bytes 32-39 carries the full string |
 
 Types 1 and 2 are fully compatible with ordinary EPICS strings. Type 3 cells are
 invisible to Channel Access and dbAccess - those clients see only the 31-byte

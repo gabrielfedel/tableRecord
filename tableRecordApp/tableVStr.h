@@ -14,19 +14,19 @@ extern "C" {
  * Each 40-byte cell (MAX_STRING_SIZE) in a STRING column buffer is exactly
  * one of three types, discriminated by bytes 31 and 32..39:
  *
- *   Type 1 — inline short (len <= 31, no embedded NUL):
+ *   Type 1 — very short string (len <= 31, no embedded NUL):
  *     bytes  0..len-1  content
  *     byte   len       NUL terminator
  *     bytes  len+1..39 zero
  *     (byte[31] == 0, pointer bytes 32..39 all zero)
  *
- *   Type 2 — plain long (32 <= len <= 39, no embedded NUL):
+ *   Type 2 — short string (32 <= len <= 39, no embedded NUL):
  *     bytes  0..len-1  content
  *     byte   len       NUL terminator
  *     bytes  len+1..39 zero
  *     discriminated by byte[31] != 0 (it is a content byte)
  *
- *   Type 3 — overflow (len > 39, or string has embedded NUL):
+ *   Type 3 — long string (len > 39, or string has embedded NUL):
  *     bytes  0..K-1    UTF-8-clean preview (K <= 31, code-point-boundary cut)
  *     bytes  K..31     zero  (byte[31] is the firewall NUL)
  *     bytes  32..39    non-NULL char* to a tablerecVStr heap block
@@ -48,13 +48,13 @@ extern "C" {
  * DB/CA/PVA/const *link* loads (devTableSoft.cpp) likewise only ever produce
  * type-1/2 cells: they read DBF_STRING, which every link plugin truncates to 39
  * chars, and EPICS has no DBR type for an array of long strings.  Type-3
- * (overflow, >39 chars) is therefore reachable only via the direct
+ * (long string, >39 chars) is therefore reachable only via the direct
  * tablerec_vstr_write / write_string_column callers below.
  *
  * All access must be under the record lock (dbScanLock / process / dbPutField).
  */
 
-/* Heap block for type-3 overflow cells.
+/* Heap block for type-3 (long string) cells.
  * Allocated as: malloc(offsetof(tablerecVStr,data) + len + 1)
  * data[len] = '\0' for debugger friendliness; readers must use len. */
 typedef struct tablerecVStr {

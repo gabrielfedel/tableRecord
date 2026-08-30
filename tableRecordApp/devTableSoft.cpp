@@ -40,7 +40,7 @@
  * MAX_STRING_SIZE-1 (39) chars for that request -- pva (pvxs pvalink_lset.cpp),
  * const (dbConvertJSON.c), and ca/db (dbFastLinkConv.c) alike. EPICS has no DBR
  * type for an array of long strings, so a link load can never deliver more than
- * 39 chars per cell. Consequently the vstring type-3 (overflow) encoding is
+ * 39 chars per cell. Consequently the vstring type-3 (long string) encoding is
  * never produced here; it is reachable only via direct tablerec_vstr_write /
  * write_string_column callers (e.g. a caput to a STRING column). See
  * test/tableInitTest.cpp:testStringTruncation for an executable record of this.
