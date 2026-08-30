@@ -19,6 +19,8 @@ tableRecord_SRCS += tableSourceRegistrar.cpp
 
 tableRecord_LIBS += pvxsIoc pvxs $(EPICS_BASE_IOC_LIBS)
 
+USR_CPPFLAGS += -DBUILDING_tableRecord_API
+API_HEADER = tableRecordAPI.h
 INC += tableRecordUtil.h
 INC += tableVStr.h
 
@@ -34,3 +36,9 @@ $(INSTALL_HTML)/style.css: $(EPICS_BASE)/html/style.css
 	@$(INSTALL) -d -m $(INSTALL_PERMISSIONS) $< $(@D)
 
 buildInstall: $(INSTALL_HTML)/style.css
+
+ifdef T_A
+ifeq (,$(INSTALL_API_HEADERS))
+$(error Requires epics-base >= 7.0.4)
+endif
+endif

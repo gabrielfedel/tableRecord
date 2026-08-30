@@ -4,6 +4,8 @@
 #include <epicsTypes.h>
 #include <stddef.h>
 
+#include "tableRecordAPI.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,6 +67,7 @@ typedef struct tablerecVStr {
 /* Write bytes[0..len) into row `row` of STRING column buffer `colbuf`.
  * Frees any existing overflow pointer, zeroes the cell, then writes a
  * type-1, type-2, or type-3 cell per the layout invariants above. */
+TABLERECORD_API
 void tablerec_vstr_write(void *colbuf, epicsUInt32 row,
                          const char *bytes, epicsUInt32 len);
 
@@ -72,11 +75,13 @@ void tablerec_vstr_write(void *colbuf, epicsUInt32 row,
  * For type 1/2 the pointer is into the cell itself; for type 3 it points
  * into the heap block.  Valid until the next write to that cell.
  * Caller must hold the record lock. */
+TABLERECORD_API
 const char *tablerec_vstr_read(const void *colbuf, epicsUInt32 row,
                                epicsUInt32 *plen);
 
 /* Free all type-3 overflow pointers in rows [0, nrows) and zero every cell.
  * Used by tableRecord.c special() sanitizer and staging writers. */
+TABLERECORD_API
 void tablerec_vstr_clear(void *colbuf, epicsUInt32 nrows);
 
 #ifdef __cplusplus

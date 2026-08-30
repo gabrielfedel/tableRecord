@@ -11,7 +11,7 @@ supported. The record is published over PV Access as an
 ## Building
 
 This is a regular EPICS module. This project depends on
-[EPICS Base](https://github.com/epics-base/epics-base) and
+[EPICS Base](https://github.com/epics-base/epics-base) >= 7.0.4 and
 [pvxs](https://github.com/epics-base/pvxs).
 
 Once `EPICS_BASE` and `PVXS` are defined in `configure/RELEASE` (or any of the

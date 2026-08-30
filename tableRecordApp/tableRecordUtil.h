@@ -1,12 +1,13 @@
 #pragma once
 
+#include "tableRecordAPI.h"
 #include "tableRecord.h"
 #include "tableVStr.h"
 
 #include <string>
 #include <vector>
 
-struct TableRecordWrapper {
+struct TABLERECORD_API TableRecordWrapper {
     struct DataColumnConfig {
         std::string name;
         std::string label;
