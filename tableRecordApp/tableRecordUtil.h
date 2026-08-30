@@ -1,4 +1,9 @@
-#pragma once
+#ifndef TABLERECORDUTIL_H
+#define TABLERECORDUTIL_H
+
+#ifdef __cplusplus
+
+#include <string>
 
 #include "tableRecordAPI.h"
 #include "tableRecord.h"
@@ -130,3 +135,6 @@ struct TABLERECORD_API TableRecordWrapper {
     // Read *col.numrows cells into out (out is cleared first).
     void read_string_column(const OptColumn &col, std::vector<std::string> &out);
 };
+
+#endif // __cplusplus
+#endif // TABLERECORDUTIL_H
