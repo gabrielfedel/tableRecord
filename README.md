@@ -27,13 +27,13 @@ make runtests
 ### Running the example IOC
 
 ```sh
-cd iocs/tableIOC/iocBoot/tableIOC
-../../bin/linux-x86_64/tableIoc st.cmd
+cd iocBoot/tableIOC
+../../bin/linux-x86_64/tableExampleIoc st.cmd
 ```
 
 ## Documentation
 
-Record documentation is available [here](https://brunoseivam.github.io/tableRecord/tableRecord.html).
+Record documentation is available [here](https://osprey-dcs.github.io/tableRecord/tableRecord.html).
 
 ## tableRecord Examples
 
