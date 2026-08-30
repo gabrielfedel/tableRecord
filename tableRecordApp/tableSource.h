@@ -1,3 +1,7 @@
+/* SPDX-License-Identifier: BSD-3-Clause
+ * See file: COPYRIGHT
+ * Author: Bruno Martins
+ */
 #ifndef TABLE_SOURCE_H
 #define TABLE_SOURCE_H
 

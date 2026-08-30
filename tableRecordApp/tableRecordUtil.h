@@ -1,3 +1,7 @@
+/* SPDX-License-Identifier: BSD-3-Clause
+ * See file: COPYRIGHT
+ * Author: Bruno Martins
+ */
 #ifndef TABLERECORDUTIL_H
 #define TABLERECORDUTIL_H
 

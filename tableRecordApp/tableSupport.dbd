@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# See file: COPYRIGHT
+# Author: Bruno Martins
+
 include "pvxsIoc.dbd"
 include "tableRecord.dbd"
 device(table, CONSTANT, devTableSoft, "Soft Channel")
