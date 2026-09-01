@@ -1,0 +1,11 @@
+record(table, "TBL:CP") {
+    field(DTYP, "Table Copy")
+    field(INP,  "@N=1")
+    field(MAXROWS, "4")
+    field(PINI, "YES")
+
+    field(C00NAME, "a") field(C00LABEL, "a") field(C00TYPE, "DOUBLE") field(C00INP, "TBL:SFT2.C00VAL")
+    field(C01NAME, "b") field(C01LABEL, "b") field(C01TYPE, "DOUBLE") field(C01INP, "TBL:SFT2.C01VAL")
+    field(C02NAME, "c") field(C02LABEL, "c") field(C02TYPE, "DOUBLE") field(C02INP, "TBL:SFT2.C02VAL")
+    field(C03NAME, "d") field(C03LABEL, "d") field(C03TYPE, "DOUBLE") field(C03INP, "TBL:SFT2.C03VAL")
+}

@@ -1,0 +1,40 @@
+record(waveform, "TBL:SFT2:COL00") {
+    field(FTVL, "DOUBLE")
+    field(NELM, "4")
+    field(INP,  {const: [1, 2, 3] })
+}
+
+record(waveform, "TBL:SFT2:COL01") {
+    field(FTVL, "DOUBLE")
+    field(NELM, "4")
+    field(INP,  {const: [9.0, 8.0, 3.0] })
+}
+
+record(waveform, "TBL:SFT2:COL02") {
+    field(FTVL, "DOUBLE")
+    field(NELM, "4")
+    field(INP,  {const: [10.0, 9.0, 4.0] })
+}
+
+record(waveform, "TBL:SFT2:COL03") {
+    field(FTVL, "DOUBLE")
+    field(NELM, "4")
+    field(INP,  {const: [11.0, 10.0, 5.0] })
+}
+
+record(table, "TBL:SFT2") {
+    field(MAXROWS, "4")
+
+    field(C00INP, "TBL:SFT2:COL00")
+    field(C01INP, "TBL:SFT2:COL01")
+    field(C02INP, "TBL:SFT2:COL02")
+    field(C03INP, "TBL:SFT2:COL03")
+
+    field(C00NAME, "x") field(C00LABEL, "X") field(C00TYPE, "DOUBLE")
+    field(C01NAME, "y") field(C01LABEL, "Y") field(C01TYPE, "DOUBLE")
+    field(C02NAME, "z") field(C02LABEL, "Z") field(C02TYPE, "DOUBLE")
+    field(C03NAME, "w") field(C03LABEL, "W") field(C03TYPE, "DOUBLE")
+
+    field(TPRO, "1")
+    field(PINI, "YES")
+}
