@@ -371,7 +371,17 @@ lock (C<dbScanLock> / C<process> / C<dbPutField>).
         extra("void *rpvt")
         interest(4)
     }
-
+	field(OUT,DBF_OUTLINK) {
+		prompt("Output Specification")
+		promptgroup("50 - Output")
+		interest(1)
+	}
+	field(BPTR,DBF_NOACCESS) {
+		prompt("Buffer Pointer")
+		special(SPC_NOMOD)
+		interest(4)
+		extra("void *		bptr")
+	}
     # ----------------------------------------------------------------
     # Column names - C00NAME .. C3FNAME
     # ----------------------------------------------------------------

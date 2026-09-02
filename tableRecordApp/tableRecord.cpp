@@ -74,6 +74,8 @@ static bool valid_pvxs_opt_col_name(const char *name)
     return name ? std::regex_match(name, RE_VALID_COXXNAME) : false;
 }
 
+
+
 /* Pointer-arithmetic helpers — valid because column fields are
    declared in consecutive groups in the DBD, so the struct members are laid
    out without intervening fields of other types. */
@@ -112,6 +114,33 @@ static char* tablerec_col_opt_name(tableRecord *prec, size_t i)
 {
     assert(i < TABLEREC_MAX_OPT_COLS);
     return prec->co00name + i*sizeof(prec->co00name);
+}
+
+//function to select row
+
+static void select_row(tableRecord *prec)
+{
+    long n_used_rows;
+    long N = 1; // fixed value for tests
+    double temp;
+                
+    void **val;
+            
+    for (size_t i = 0; i < prec->numcols; ++i) {
+        if (tablerec_col_type(prec, i) != DBF_DOUBLE){
+            printf("All the columns should be double\n");
+            return;
+        }
+        n_used_rows = prec->co00nrows + i*sizeof(prec->co00nrows);
+        printf("N used rows %ld\n", n_used_rows);
+        if(n_used_rows < N) {
+            printf("All the columns should be bigger than N\n");
+            return;
+        }
+        val = tablerec_col_val_addr(prec, i);
+        temp = ((double *)*val)[N];
+        ((double *)prec->bptr)[i] = temp;
+    }
 }
 
 static long init_record(struct dbCommon *pcommon, int pass)
@@ -265,6 +294,12 @@ static long init_record(struct dbCommon *pcommon, int pass)
                 prec->numcols, dbValueSize(type), "table: optional column data");
         }
 
+        if (!prec->bptr) {
+            /* device support did not allocate memory so we must do it */
+            prec->bptr = callocMustSucceed(prec->maxrows, dbValueSize(DBF_DOUBLE),
+                "table: buffer calloc failed");
+        }
+
         return 0;
     }
 
@@ -306,6 +341,8 @@ static long process(struct dbCommon *pcommon)
     if (prec->c00val)
         db_post_events(prec, prec->c00val, DBE_VALUE | DBE_LOG);
 
+    select_row(prec);
+    dbPutLink(&prec->out,DBF_DOUBLE , prec->bptr, prec->numcols);
     /* Notify a registered publisher synchronously, while the lock is still held
      * and this cycle's CHGD flags are valid. */
     if (prec->rpvt) {
@@ -313,6 +350,7 @@ static long process(struct dbCommon *pcommon)
         if (hook->notify)
             hook->notify((struct tableRecord *)prec);
     }
+
 
     recGblFwdLink(prec);
     prec->pact = FALSE;
