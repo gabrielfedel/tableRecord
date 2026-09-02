@@ -11,6 +11,6 @@ tableExampleIoc_registerRecordDeviceDriver(pdbbase)
 dbLoadRecords("$(TOP)/db/table-soft-double.db")
 #dbLoadRecords("$(TOP)/db/table-stat.db")
 #dbLoadRecords("$(TOP)/db/table-scalar.db")
-dbLoadRecords("$(TOP)/db/table-cp.db")
+#dbLoadRecords("$(TOP)/db/table-cp.db")
 
 iocInit()

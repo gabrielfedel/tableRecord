@@ -38,3 +38,21 @@ record(table, "TBL:SFT2") {
     field(TPRO, "1")
     field(PINI, "YES")
 }
+
+
+record(table, "TBL:SRC") {
+    field(DTYP, "Random Sim")
+    field(DESC, "Stat demo source table")
+    field(SCAN, "1 second")
+    field(MAXROWS, "32")
+
+    field(C00NAME, "x") field(C00LABEL, "X") field(C00TYPE, "DOUBLE")
+    field(C01NAME, "y") field(C01LABEL, "Y") field(C01TYPE, "DOUBLE")
+    field(C02NAME, "z") field(C02LABEL, "Z") field(C02TYPE, "DOUBLE")
+    field(OUT,  "TBL:WAVE PP")
+}
+
+record(waveform, "TBL:WAVE") {
+    field(NELM, "10")
+    field(FTVL, "DOUBLE")
+}
