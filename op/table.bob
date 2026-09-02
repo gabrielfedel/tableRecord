@@ -233,4 +233,20 @@
     <width>440</width>
     <height>50</height>
   </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry</name>
+    <pv_name>TBL:SRC.NSELR</pv_name>
+    <x>1700</x>
+    <y>180</y>
+    <width>250</width>
+    <height>60</height>
+  </widget>
+  <widget type="textentry" version="3.0.0">
+    <name>Text Entry_1</name>
+    <pv_name>TBL:SRC.OUTR</pv_name>
+    <x>1700</x>
+    <y>261</y>
+    <width>250</width>
+    <height>60</height>
+  </widget>
 </display>

@@ -49,7 +49,7 @@ record(table, "TBL:SRC") {
     field(C00NAME, "x") field(C00LABEL, "X") field(C00TYPE, "DOUBLE")
     field(C01NAME, "y") field(C01LABEL, "Y") field(C01TYPE, "DOUBLE")
     field(C02NAME, "z") field(C02LABEL, "Z") field(C02TYPE, "DOUBLE")
-    field(OUT,  "TBL:WAVE PP")
+    field(OUTR,  "TBL:WAVE PP")
 }
 
 record(waveform, "TBL:WAVE") {

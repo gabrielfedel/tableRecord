@@ -121,18 +121,17 @@ static char* tablerec_col_opt_name(tableRecord *prec, size_t i)
 static void select_row(tableRecord *prec)
 {
     long n_used_rows;
-    long N = 1; // fixed value for tests
+    long N = prec->nselr; 
     double temp;
                 
     void **val;
             
     for (size_t i = 0; i < prec->numcols; ++i) {
-        if (tablerec_col_type(prec, i) != DBF_DOUBLE){
-            printf("All the columns should be double\n");
+        //Does not support string
+        if (tablerec_col_type(prec, i) == DBF_STRING){
             return;
         }
-        n_used_rows = prec->co00nrows + i*sizeof(prec->co00nrows);
-        printf("N used rows %ld\n", n_used_rows);
+        n_used_rows = prec->c00nrows + i*sizeof(prec->c00nrows);
         if(n_used_rows < N) {
             printf("All the columns should be bigger than N\n");
             return;
@@ -296,7 +295,7 @@ static long init_record(struct dbCommon *pcommon, int pass)
 
         if (!prec->bptr) {
             /* device support did not allocate memory so we must do it */
-            prec->bptr = callocMustSucceed(prec->maxrows, dbValueSize(DBF_DOUBLE),
+            prec->bptr = callocMustSucceed(prec->maxrows, dbValueSize(prec->orty),
                 "table: buffer calloc failed");
         }
 
@@ -342,7 +341,7 @@ static long process(struct dbCommon *pcommon)
         db_post_events(prec, prec->c00val, DBE_VALUE | DBE_LOG);
 
     select_row(prec);
-    dbPutLink(&prec->out,DBF_DOUBLE , prec->bptr, prec->numcols);
+    dbPutLink(&prec->outr,DBF_DOUBLE , prec->bptr, prec->numcols);
     /* Notify a registered publisher synchronously, while the lock is still held
      * and this cycle's CHGD flags are valid. */
     if (prec->rpvt) {

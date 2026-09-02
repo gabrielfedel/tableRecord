@@ -371,11 +371,23 @@ lock (C<dbScanLock> / C<process> / C<dbPutField>).
         extra("void *rpvt")
         interest(4)
     }
-	field(OUT,DBF_OUTLINK) {
-		prompt("Output Specification")
+    field(NSELR, DBF_ULONG) {
+        prompt("Select N row")
+        interest(1)
+        initial("0")
+    }
+	field(OUTR,DBF_OUTLINK) {
+		prompt("Output Row Specification")
 		promptgroup("50 - Output")
 		interest(1)
 	}
+    field(ORTY, DBF_MENU) {
+        prompt("Ouput Row Type")
+        special(SPC_NOMOD)
+        interest(1)
+        menu(menuFtype)
+        initial("DOUBLE")
+    }
 	field(BPTR,DBF_NOACCESS) {
 		prompt("Buffer Pointer")
 		special(SPC_NOMOD)
