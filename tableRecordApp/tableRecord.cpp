@@ -23,6 +23,7 @@
 #include "recGbl.h"
 #include "cantProceed.h"
 #include "tableVStr.h"
+#include "epicsMath.h"
 
 #define GEN_SIZE_OFFSET
 #include "tableRecord.h"
@@ -127,17 +128,20 @@ static void select_row(tableRecord *prec)
     void **val;
             
     for (size_t i = 0; i < prec->numcols; ++i) {
-        //Does not support string
-        if (tablerec_col_type(prec, i) == DBF_STRING){
-            return;
-        }
         n_used_rows = prec->c00nrows + i*sizeof(prec->c00nrows);
         if(n_used_rows < N) {
             printf("All the columns should be bigger than N\n");
             return;
         }
-        val = tablerec_col_val_addr(prec, i);
-        temp = ((double *)*val)[N];
+        //Does not support string
+        if (tablerec_col_type(prec, i) == DBF_STRING){
+            temp = epicsNAN;
+        } else {
+        // TODO: include support for other types
+        // TODO: Fix double conversion
+            val = tablerec_col_val_addr(prec, i);
+            temp = ((double *)*val)[N];
+        }
         ((double *)prec->bptr)[i] = temp;
     }
 }
