@@ -1,0 +1,28 @@
+=title TableCalc Record (tablecalc)
+
+=cut
+
+recordtype(tablecalc) {
+
+=cut
+
+    include "dbCommon.dbd"
+    include "tableBase.dbd"
+
+    %
+    %/* Device Support Entry Table */
+    %struct tablecalcRecord;
+    %typedef struct {
+    %    dset common;
+    %    long (*read_table)(struct tablecalcRecord *prec);
+    %} tablecalcdset;
+    %#define HAS_tablecalcdset
+    %
+
+    field(X, DBF_ULONG) {
+        prompt("New Field for Test")
+        special(SPC_NOMOD)
+        interest(1)
+        initial("0")
+    }
+}

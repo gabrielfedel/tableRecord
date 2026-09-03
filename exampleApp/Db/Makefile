@@ -9,6 +9,7 @@ DB += table-csv.db
 DB += table-sim.db
 DB += table-soft.db
 DB += table-stat.db
+DB += tablecalc.db
 
 include $(TOP)/configure/RULES
 

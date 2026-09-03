@@ -4,6 +4,8 @@
 
 include "pvxsIoc.dbd"
 include "tableRecord.dbd"
+include "tablecalcRecord.dbd"
 device(table, CONSTANT, devTableSoft, "Soft Channel")
+device(tablecalc, CONSTANT, devTablecalcSoft, "Soft Channel")
 
 registrar(registerTableSourceCmds)

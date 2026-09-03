@@ -9,5 +9,6 @@ dbLoadRecords("$(TOP)/db/table-csv.db")
 dbLoadRecords("$(TOP)/db/table-sim.db")
 dbLoadRecords("$(TOP)/db/table-soft.db")
 dbLoadRecords("$(TOP)/db/table-stat.db")
+dbLoadRecords("$(TOP)/db/tablecalc.db")
 
 iocInit()
